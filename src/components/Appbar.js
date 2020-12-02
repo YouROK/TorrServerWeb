@@ -16,18 +16,13 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
-import LibraryAddIcon from "@material-ui/icons/LibraryAdd";
-import PublishIcon from "@material-ui/icons/Publish";
-import DeleteIcon from "@material-ui/icons/Delete";
 import ListIcon from "@material-ui/icons/List";
-import SettingsIcon from "@material-ui/icons/Settings";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 
 import TorrentList from "./TorrentList";
 import { Box } from "@material-ui/core";
 
 import AddDialog from "./Add";
-import UploadDialog from "./Upload";
 import RemoveAll from "./RemoveAll";
 import SettingsDialog from "./Settings";
 
