@@ -38,10 +38,6 @@ export default class Torrent extends React.Component {
             </Typography>
           </Button>
           <Button>
-            <ListIcon />
-            <Typography>Playlist</Typography>
-          </Button>
-          <Button>
             <DeleteIcon />
             <Typography>Delete</Typography>
           </Button>

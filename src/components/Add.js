@@ -10,7 +10,6 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import LibraryAddIcon from "@material-ui/icons/LibraryAdd";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItem from "@material-ui/core/ListItem";
-import List from "@material-ui/core/List";
 
 export default function AddDialog() {
   const [open, setOpen] = React.useState(false);
@@ -18,25 +17,36 @@ export default function AddDialog() {
     setOpen(true);
   };
 
-  const handleClose = (add) => {
-    setOpen(false);
-    if (add) {
-      try {
-        let magnet = this.refs.magnetField.getValue();
-        if (magnet) {
-          fetch("http://127.0.0.1:8090/torrents", {
-            method: "post",
-            body: JSON.stringify({ action: "add", link: "" }),
-            headers: {
-              Accept: "application/json, text/plain, */*",
-              "Content-Type": "application/json",
-            },
-          });
-        }
-      } catch (e) {
-        console.log(e);
+
+
+  const handleCloseSave = () => {
+    try {
+      var magnet =
+
+      if (this != null && this.myRefs.magnet) {
+        fetch("http://127.0.0.1:8090/torrents", {
+          method: "post",
+          body: JSON.stringify({
+            action: "add",
+            link: this.myRefs.magnet,
+            title: this.myRefs.title,
+            poster: this.myRefs.poster,
+            save_to_db: true,
+          }),
+          headers: {
+            Accept: "application/json, text/plain, */*",
+            "Content-Type": "application/json",
+          },
+        });
+        setOpen(false);
       }
+    } catch (e) {
+      console.log(e);
     }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -58,47 +68,39 @@ export default function AddDialog() {
           <DialogContentText>
             Add magnet or link to torrent file
           </DialogContentText>
-          <List>
-            <ListItem>
-              <TextField
-                ref="magnetField"
-                autoFocus
-                margin="dense"
-                id="magnet"
-                label="Magnet"
-                type="text"
-                fullWidth
-              />
-            </ListItem>
-            <ListItem>
-              <TextField
-                ref="titleField"
-                autoFocus
-                margin="dense"
-                id="title"
-                label="Title"
-                type="text"
-                fullWidth
-              />
-            </ListItem>
-            <ListItem>
-              <TextField
-                ref="posterField"
-                autoFocus
-                margin="dense"
-                id="poster"
-                label="Poster"
-                type="url"
-                fullWidth
-              />
-            </ListItem>
-          </List>
+          <TextField
+            onChange={this.handleMagnet}
+            autoFocus
+            margin="dense"
+            id="magnet"
+            label="Magnet"
+            type="text"
+            fullWidth
+          />
+          <TextField
+              onChange={this.handleTitle}
+            autoFocus
+            margin="dense"
+            id="title"
+            label="Title"
+            type="text"
+            fullWidth
+          />
+          <TextField
+              onChange={this.handlePoster}
+            autoFocus
+            margin="dense"
+            id="poster"
+            label="Poster"
+            type="url"
+            fullWidth
+          />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose(false)} color="primary">
+          <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose(true)} color="primary">
+          <Button onClick={handleCloseSave} color="primary">
             Add
           </Button>
         </DialogActions>
