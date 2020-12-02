@@ -2,11 +2,12 @@ import React from "react";
 import Container from "@material-ui/core/Container";
 import Torrent from "./Torrent";
 import List from "@material-ui/core/List";
+import { Typography } from "@material-ui/core";
 
 export default class TorrentList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { torrents: [] };
+    this.state = { torrents: [], offline: false };
   }
 
   componentDidMount() {
@@ -18,7 +19,7 @@ export default class TorrentList extends React.Component {
   }
 
   tick() {
-    fetch("http://127.0.0.1:8090/torrents", {
+    fetch(/*"http://127.0.0.1:8090" +*/ "/torrents", {
       method: "post",
       body: JSON.stringify({ action: "list" }),
       headers: {
@@ -31,10 +32,12 @@ export default class TorrentList extends React.Component {
         (json) => {
           this.setState({
             torrents: json,
+            offline: false,
           });
         },
         (error) => {
           console.log(error);
+          this.setState({ offline: true });
         }
       );
   }
@@ -42,12 +45,16 @@ export default class TorrentList extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Container maxWidth="sm">
-          <List>
-            {this.state.torrents.map((torrent) => (
-              <Torrent key={torrent.hash} torrent={torrent} />
-            ))}
-          </List>
+        <Container maxWidth="lg">
+          {!this.state.offline ? (
+            <List>
+              {this.state.torrents.map((torrent) => (
+                <Torrent key={torrent.hash} torrent={torrent} />
+              ))}
+            </List>
+          ) : (
+            <Typography>Offline</Typography>
+          )}
         </Container>
       </React.Fragment>
     );

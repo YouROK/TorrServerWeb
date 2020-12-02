@@ -13,33 +13,44 @@ import ListItem from "@material-ui/core/ListItem";
 
 export default function AddDialog() {
   const [open, setOpen] = React.useState(false);
+
+  const [magnet, setMagnet] = React.useState("");
+  const [title, setTitle] = React.useState("");
+  const [poster, setPoster] = React.useState("");
+
   const handleClickOpen = () => {
     setOpen(true);
   };
 
+  const inputMagnet = (event) => {
+    setMagnet(event.target.value);
+  };
 
+  const inputTitle = (event) => {
+    setTitle(event.target.value);
+  };
+
+  const inputPoster = (event) => {
+    setPoster(event.target.value);
+  };
 
   const handleCloseSave = () => {
     try {
-      var magnet =
-
-      if (this != null && this.myRefs.magnet) {
-        fetch("http://127.0.0.1:8090/torrents", {
-          method: "post",
-          body: JSON.stringify({
-            action: "add",
-            link: this.myRefs.magnet,
-            title: this.myRefs.title,
-            poster: this.myRefs.poster,
-            save_to_db: true,
-          }),
-          headers: {
-            Accept: "application/json, text/plain, */*",
-            "Content-Type": "application/json",
-          },
-        });
-        setOpen(false);
-      }
+      fetch(/*"http://127.0.0.1:8090" +*/ "/torrents", {
+        method: "post",
+        body: JSON.stringify({
+          action: "add",
+          link: magnet,
+          title: title,
+          poster: poster,
+          save_to_db: true,
+        }),
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+      });
+      setOpen(false);
     } catch (e) {
       console.log(e);
     }
@@ -66,20 +77,10 @@ export default function AddDialog() {
         <DialogTitle id="form-dialog-title">Add Magnet</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Add magnet or link to torrent file
+            Add magnet or link to torrent file:
           </DialogContentText>
           <TextField
-            onChange={this.handleMagnet}
-            autoFocus
-            margin="dense"
-            id="magnet"
-            label="Magnet"
-            type="text"
-            fullWidth
-          />
-          <TextField
-              onChange={this.handleTitle}
-            autoFocus
+            onChange={inputTitle}
             margin="dense"
             id="title"
             label="Title"
@@ -87,12 +88,20 @@ export default function AddDialog() {
             fullWidth
           />
           <TextField
-              onChange={this.handlePoster}
-            autoFocus
+            onChange={inputPoster}
             margin="dense"
             id="poster"
             label="Poster"
             type="url"
+            fullWidth
+          />
+          <TextField
+            onChange={inputMagnet}
+            autoFocus
+            margin="dense"
+            id="magnet"
+            label="Magnet"
+            type="text"
             fullWidth
           />
         </DialogContent>

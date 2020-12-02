@@ -25,7 +25,11 @@ import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 
 import TorrentList from "./TorrentList";
 import { Box } from "@material-ui/core";
+
 import AddDialog from "./Add";
+import UploadDialog from "./Upload";
+import RemoveAll from "./RemoveAll";
+import SettingsDialog from "./Settings";
 
 const drawerWidth = 240;
 
@@ -155,34 +159,32 @@ export default function MiniDrawer() {
         <Divider />
         <List>
           <AddDialog />
-          <ListItem button key="Upload file">
-            <ListItemIcon>
-              <PublishIcon />
-            </ListItemIcon>
-            <ListItemText primary="Upload file" />
-          </ListItem>
-          <ListItem button key="Remove all">
-            <ListItemIcon>
-              <DeleteIcon />
-            </ListItemIcon>
-            <ListItemText primary="Remove all" />
-          </ListItem>
+          {/*<UploadDialog />*/}
+          <RemoveAll />
         </List>
         <Divider />
         <List>
-          <ListItem button key="Playlist all torrents">
+          <ListItem
+            button
+            key="Playlist all torrents"
+            onClick={() =>
+              window.open(
+                /*"http://127.0.0.1:8090" +*/ "/playlistall/all.m3u",
+                "_blank"
+              )
+            }
+          >
             <ListItemIcon>
               <ListIcon />
             </ListItemIcon>
             <ListItemText primary="Playlist all torrents" />
           </ListItem>
-          <ListItem button key="Settings">
-            <ListItemIcon>
-              <SettingsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Settings" />
-          </ListItem>
-          <ListItem button key="Close server">
+          <SettingsDialog />
+          <ListItem
+            button
+            key="Close server"
+            onClick={() => fetch(/*"http://127.0.0.1:8090" +*/ "/shutdown")}
+          >
             <ListItemIcon>
               <PowerSettingsNewIcon />
             </ListItemIcon>

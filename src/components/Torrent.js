@@ -4,47 +4,71 @@ import Button from "@material-ui/core/Button";
 
 import "fontsource-roboto";
 
-import NumericLabel from "react-pretty-numbers";
-
 import DeleteIcon from "@material-ui/icons/Delete";
-import ListIcon from "@material-ui/icons/List";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
 
 const style = {
-  name_button: {
-    width: 300,
+  width100: {
+    width: "100%",
   },
 };
 
-export default class Torrent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      torrent: {},
-    };
-  }
+export default function Torrent(props) {
+  const deleteHandler = () => {
+    try {
+      fetch(/*"http://127.0.0.1:8090" +*/ "/torrents", {
+        method: "post",
+        body: JSON.stringify({
+          action: "rem",
+          hash: props.torrent.hash,
+        }),
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
-  render() {
+  const humanizeSize = (size) => {
+    if (!size) return "";
+    var i = Math.floor(Math.log(size) / Math.log(1024));
     return (
-      <ListItem>
-        <ButtonGroup disableElevation variant="contained" color="primary">
-          <Button style={style.name_button}>
-            <Typography>
-              {this.props.torrent.name
-                ? this.props.torrent.name
-                : this.props.torrent.title}
-            </Typography>
-          </Button>
-          <Button>
-            <DeleteIcon />
-            <Typography>Delete</Typography>
-          </Button>
-        </ButtonGroup>
-      </ListItem>
+      (size / Math.pow(1024, i)).toFixed(2) * 1 +
+      " " +
+      ["B", "kB", "MB", "GB", "TB"][i]
     );
-  }
+  };
+
+  return (
+    <ListItem>
+      <ButtonGroup
+        style={style.width100}
+        disableElevation
+        variant="contained"
+        color="primary"
+      >
+        <Button style={style.width100}>
+          <Typography>
+            {props.torrent.name ? props.torrent.name : props.torrent.title}
+            {props.torrent.torrent_size > 0
+              ? " | " + humanizeSize(props.torrent.torrent_size)
+              : ""}
+            {props.torrent.download_speed > 0
+              ? " | " + humanizeSize(props.torrent.download_speed) + "/sec"
+              : ""}
+          </Typography>
+        </Button>
+        <Button onClick={deleteHandler}>
+          <DeleteIcon />
+          <Typography>Delete</Typography>
+        </Button>
+      </ButtonGroup>
+    </ListItem>
+  );
 }
 
 /*
