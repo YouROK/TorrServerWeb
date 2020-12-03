@@ -164,7 +164,7 @@ export default function MiniDrawer() {
             key="Playlist all torrents"
             onClick={() =>
               window.open(
-                /*"http://127.0.0.1:8090" +*/ "/playlistall/all.m3u",
+                "http://127.0.0.1:8090" + "/playlistall/all.m3u",
                 "_blank"
               )
             }
@@ -178,7 +178,7 @@ export default function MiniDrawer() {
           <ListItem
             button
             key="Close server"
-            onClick={() => fetch(/*"http://127.0.0.1:8090" +*/ "/shutdown")}
+            onClick={() => fetch("http://127.0.0.1:8090" + "/shutdown")}
           >
             <ListItemIcon>
               <PowerSettingsNewIcon />

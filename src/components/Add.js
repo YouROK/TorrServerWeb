@@ -36,7 +36,7 @@ export default function AddDialog() {
 
   const handleCloseSave = () => {
     try {
-      fetch(/*"http://127.0.0.1:8090" +*/ "/torrents", {
+      fetch("http://127.0.0.1:8090" + "/torrents", {
         method: "post",
         body: JSON.stringify({
           action: "add",

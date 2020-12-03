@@ -1,74 +1,163 @@
-import React from "react";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import Button from "@material-ui/core/Button";
+import React, { useEffect } from 'react'
+import ButtonGroup from '@material-ui/core/ButtonGroup'
+import Button from '@material-ui/core/Button'
 
-import "fontsource-roboto";
+import 'fontsource-roboto'
 
-import DeleteIcon from "@material-ui/icons/Delete";
-import Typography from "@material-ui/core/Typography";
-import ListItem from "@material-ui/core/ListItem";
+import DeleteIcon from '@material-ui/icons/Delete'
+import Typography from '@material-ui/core/Typography'
+import ListItem from '@material-ui/core/ListItem'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogActions from '@material-ui/core/DialogActions'
+import Dialog from '@material-ui/core/Dialog'
+
+import TorrentInfo from './TorrentInfo'
 
 const style = {
-  width100: {
-    width: "100%",
-  },
-};
+    width100: {
+        width: '100%',
+    },
+}
 
 export default function Torrent(props) {
-  const deleteHandler = () => {
-    try {
-      fetch(/*"http://127.0.0.1:8090" +*/ "/torrents", {
-        method: "post",
+    const [open, setOpen] = React.useState(false)
+    const [torrent, setTorrent] = React.useState(props.torrent)
+    var timerID = null
+
+    const deleteHandler = () => {
+        try {
+            fetch('http://127.0.0.1:8090' + '/torrents', {
+                method: 'post',
+                body: JSON.stringify({
+                    action: 'rem',
+                    hash: torrent.hash,
+                }),
+                headers: {
+                    Accept: 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json',
+                },
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const humanizeSize = (size) => {
+        if (!size) return ''
+        var i = Math.floor(Math.log(size) / Math.log(1024))
+        return (size / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i]
+    }
+
+    useEffect(() => {
+        timerID = setInterval(() => update(), 1000)
+        return () => {
+            clearInterval(timerID)
+        }
+    }, [])
+
+    const update = () => {
+        if (open)
+            getTorrent(torrent.hash, (torr, error) => {
+                if (error) console.error(error)
+                else if (torr) setTorrent(torr)
+            })
+    }
+
+    return (
+        <div>
+            <ListItem>
+                <ButtonGroup style={style.width100} disableElevation variant="contained" color="primary">
+                    <Button
+                        style={style.width100}
+                        onClick={() => {
+                            setOpen(true)
+                        }}
+                    >
+                        <Typography>
+                            {torrent.name ? torrent.name : torrent.title}
+                            {torrent.torrent_size > 0 ? ' | ' + humanizeSize(torrent.torrent_size) : ''}
+                            {torrent.download_speed > 0 ? ' | ' + humanizeSize(torrent.download_speed) + '/sec' : ''}
+                        </Typography>
+                    </Button>
+                    <Button onClick={deleteHandler}>
+                        <DeleteIcon />
+                        <Typography>Delete</Typography>
+                    </Button>
+                </ButtonGroup>
+            </ListItem>
+            <Dialog
+                open={open}
+                onClose={() => {
+                    setOpen(false)
+                }}
+                aria-labelledby="form-dialog-title"
+                fullWidth
+            >
+                <DialogTitle id="form-dialog-title">
+                    {torrent.title} {torrent.name && ' | ' + torrent.name}
+                </DialogTitle>
+                <DialogContent>
+                    <TorrentInfo torrent={torrent} start={open} />
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        onClick={() => {
+                            setOpen(false)
+                        }}
+                        color="primary"
+                    >
+                        OK
+                    </Button>
+                    <Button
+                        color="primary"
+                        aria-label="text primary button"
+                        onClick={() => {
+                            dropTorrent(torrent)
+                            setOpen(false)
+                        }}
+                    >
+                        Drop
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </div>
+    )
+}
+
+function getTorrent(hash, callback) {
+    fetch('http://127.0.0.1:8090' + '/torrents', {
+        method: 'post',
+        body: JSON.stringify({ action: 'get', hash: hash }),
+        headers: {
+            Accept: 'application/json, text/plain, */*',
+            'Content-Type': 'application/json',
+        },
+    })
+        .then((res) => res.json())
+        .then(
+            (json) => {
+                callback(json, null)
+            },
+            (error) => {
+                callback(null, error)
+            }
+        )
+}
+
+function dropTorrent(torrent) {
+    fetch('http://127.0.0.1:8090' + '/torrents', {
+        method: 'post',
         body: JSON.stringify({
-          action: "rem",
-          hash: props.torrent.hash,
+            action: 'drop',
+            hash: torrent.hash,
         }),
         headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json",
+            Accept: 'application/json, text/plain, */*',
+            'Content-Type': 'application/json',
         },
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const humanizeSize = (size) => {
-    if (!size) return "";
-    var i = Math.floor(Math.log(size) / Math.log(1024));
-    return (
-      (size / Math.pow(1024, i)).toFixed(2) * 1 +
-      " " +
-      ["B", "kB", "MB", "GB", "TB"][i]
-    );
-  };
-
-  return (
-    <ListItem>
-      <ButtonGroup
-        style={style.width100}
-        disableElevation
-        variant="contained"
-        color="primary"
-      >
-        <Button style={style.width100}>
-          <Typography>
-            {props.torrent.name ? props.torrent.name : props.torrent.title}
-            {props.torrent.torrent_size > 0
-              ? " | " + humanizeSize(props.torrent.torrent_size)
-              : ""}
-            {props.torrent.download_speed > 0
-              ? " | " + humanizeSize(props.torrent.download_speed) + "/sec"
-              : ""}
-          </Typography>
-        </Button>
-        <Button onClick={deleteHandler}>
-          <DeleteIcon />
-          <Typography>Delete</Typography>
-        </Button>
-      </ButtonGroup>
-    </ListItem>
-  );
+    })
 }
 
 /*

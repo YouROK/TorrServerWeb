@@ -6,7 +6,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 
 export default function RemoveAll() {
   const fnRemoveAll = () => {
-    fetch(/*"http://127.0.0.1:8090" +*/ "/torrents", {
+    fetch("http://127.0.0.1:8090" + "/torrents", {
       method: "post",
       body: JSON.stringify({ action: "list" }),
       headers: {
@@ -17,7 +17,7 @@ export default function RemoveAll() {
       .then((res) => res.json())
       .then((json) => {
         json.forEach((torr) => {
-          fetch(/*"http://127.0.0.1:8090" +*/ "/torrents", {
+          fetch("http://127.0.0.1:8090" + "/torrents", {
             method: "post",
             body: JSON.stringify({ action: "rem", hash: torr.hash }),
             headers: {
