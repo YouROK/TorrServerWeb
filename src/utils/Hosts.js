@@ -1,4 +1,5 @@
 export const torrentsHost = 'http://127.0.0.1:8090' + '/torrents'
+export const torrentUploadHost = 'http://127.0.0.1:8090' + '/torrent/upload'
 export const settingsHost = 'http://127.0.0.1:8090' + '/settings'
 export const streamHost = 'http://127.0.0.1:8090' + '/stream'
 export const shutdownHost = 'http://127.0.0.1:8090' + '/shutdown'

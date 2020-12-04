@@ -27,6 +27,7 @@ import RemoveAll from './RemoveAll'
 import SettingsDialog from './Settings'
 import { playlistAllHost, shutdownHost } from '../utils/Hosts'
 import DonateDialog from './Donate'
+import UploadDialog from './Upload'
 
 const drawerWidth = 240
 
@@ -150,7 +151,7 @@ export default function MiniDrawer() {
                 <Divider />
                 <List>
                     <AddDialog />
-                    {/*<UploadDialog />*/}
+                    <UploadDialog />
                     <RemoveAll />
                     <DonateDialog />
                 </List>
