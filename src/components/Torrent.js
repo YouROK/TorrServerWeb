@@ -45,7 +45,7 @@ export default function Torrent(props) {
         return () => {
             clearInterval(timerID.current)
         }
-    }, [open])
+    }, [torrent.hash, open])
 
     return (
         <div>

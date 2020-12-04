@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import Typography from '@material-ui/core/Typography'
-import LinearProgress from '@material-ui/core/LinearProgress'
 import { Button, ButtonGroup, List, ListItem } from '@material-ui/core'
 import CachedIcon from '@material-ui/icons/Cached'
 
@@ -67,13 +66,6 @@ export default function DialogTorrentInfo(props) {
                 ))}
         </List>
     )
-}
-
-function getProgress(torrent) {
-    if (torrent.preloaded_bytes > 0 && torrent.preload_size > 0 && torrent.preloaded_bytes < torrent.preload_size) {
-        return (torrent.preloaded_bytes * 100) / torrent.preload_size
-    }
-    return 0
 }
 
 function getPreload(torrent) {

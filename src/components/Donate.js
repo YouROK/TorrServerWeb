@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -17,7 +17,6 @@ const donateFrame =
 
 export default function DonateDialog() {
     const [open, setOpen] = React.useState(false)
-    const [settings, setSets] = React.useState({})
 
     const handleClickOpen = () => {
         setOpen(true)
