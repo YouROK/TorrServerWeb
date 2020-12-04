@@ -24,9 +24,12 @@ export default function SettingsDialog() {
     }
     const handleCloseSave = () => {
         setOpen(false)
+        let sets = settings
+        sets.CacheSize *= 1024 * 1024
+        sets.PreloadBufferSize *= 1024 * 1024
         fetch(settingsHost, {
             method: 'post',
-            body: JSON.stringify({ action: 'set', sets: settings }),
+            body: JSON.stringify({ action: 'set', sets: sets }),
             headers: {
                 Accept: 'application/json, text/plain, */*',
                 'Content-Type': 'application/json',
@@ -46,6 +49,8 @@ export default function SettingsDialog() {
             .then((res) => res.json())
             .then(
                 (json) => {
+                    json.CacheSize /= 1024 * 1024
+                    json.PreloadBufferSize /= 1024 * 1024
                     setSets(json)
                 },
                 (error) => {

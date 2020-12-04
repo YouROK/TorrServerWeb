@@ -11,6 +11,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogActions from '@material-ui/core/DialogActions'
 import Dialog from '@material-ui/core/Dialog'
+import Image from 'material-ui-image'
 
 import { humanizeSize } from '../utils/Utils'
 
@@ -79,14 +80,10 @@ export default function Torrent(props) {
                     setOpen(false)
                 }}
                 aria-labelledby="form-dialog-title"
-                fullWidth
+                fullWidth={true}
+                maxWidth={'lg'}
             >
-                <DialogTitle id="form-dialog-title">
-                    {torrent.title} {torrent.name && ' | ' + torrent.name}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogTorrentInfo torrent={torrent} start={open} />
-                </DialogContent>
+                <DialogTorrentInfo torrent={torrent} start={open} />
                 <DialogActions>
                     <Button
                         onClick={() => {
