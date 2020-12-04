@@ -26,17 +26,7 @@ export default function TorrentList(props) {
 
     return (
         <React.Fragment>
-            <Container maxWidth="lg">
-                {!offline ? (
-                    <List>
-                        {torrents.map((torrent) => (
-                            <Torrent key={torrent.hash} torrent={torrent} />
-                        ))}
-                    </List>
-                ) : (
-                    <Typography>Offline</Typography>
-                )}
-            </Container>
+            <Container maxWidth="lg">{!offline ? <List>{torrents && torrents.map((torrent) => <Torrent key={torrent.hash} torrent={torrent} />)}</List> : <Typography>Offline</Typography>}</Container>
         </React.Fragment>
     )
 }
