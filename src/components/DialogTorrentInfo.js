@@ -13,6 +13,9 @@ const style = {
     width100: {
         width: '100%',
     },
+    width80: {
+        width: '80%',
+    },
     poster: {
         display: 'flex',
         flexDirection: 'row',
@@ -31,7 +34,7 @@ export default function DialogTorrentInfo(props) {
             <DialogTitle id="form-dialog-title">
                 <Grid container spacing={1}>
                     <Grid item>{torrent.poster && <img height="200" align="left" style={style.poster} src={torrent.poster} />}</Grid>
-                    <Grid item>
+                    <Grid style={style.width80} item>
                         {torrent.title} {torrent.name && torrent.name != torrent.title && ' | ' + torrent.name}
                         <Typography>
                             <b>Peers: </b> {getPeer(torrent)}
