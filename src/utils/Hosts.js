@@ -1,0 +1,7 @@
+export const torrentsHost = 'http://127.0.0.1:8090' + '/torrents'
+export const settingsHost = 'http://127.0.0.1:8090' + '/settings'
+export const streamHost = 'http://127.0.0.1:8090' + '/stream'
+export const shutdownHost = 'http://127.0.0.1:8090' + '/shutdown'
+export const echoHost = 'http://127.0.0.1:8090' + '/echo'
+export const playlistAllHost = 'http://127.0.0.1:8090' + '/playlistall/all.m3u'
+export const playlistTorrHost = 'http://127.0.0.1:8090' + '/stream'

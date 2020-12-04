@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import Button from '@material-ui/core/Button'
 
@@ -9,11 +9,13 @@ import Typography from '@material-ui/core/Typography'
 import ListItem from '@material-ui/core/ListItem'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogActions from '@material-ui/core/DialogActions'
 import Dialog from '@material-ui/core/Dialog'
 
-import TorrentInfo from './TorrentInfo'
+import { humanizeSize } from '../utils/Utils'
+
+import DialogTorrentInfo from './DialogTorrentInfo'
+import { torrentsHost } from '../utils/Hosts'
 
 const style = {
     width100: {
@@ -24,46 +26,26 @@ const style = {
 export default function Torrent(props) {
     const [open, setOpen] = React.useState(false)
     const [torrent, setTorrent] = React.useState(props.torrent)
-    var timerID = null
-
-    const deleteHandler = () => {
-        try {
-            fetch('http://127.0.0.1:8090' + '/torrents', {
-                method: 'post',
-                body: JSON.stringify({
-                    action: 'rem',
-                    hash: torrent.hash,
-                }),
-                headers: {
-                    Accept: 'application/json, text/plain, */*',
-                    'Content-Type': 'application/json',
-                },
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
-    const humanizeSize = (size) => {
-        if (!size) return ''
-        var i = Math.floor(Math.log(size) / Math.log(1024))
-        return (size / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i]
-    }
+    const timerID = useRef(-1)
 
     useEffect(() => {
-        timerID = setInterval(() => update(), 1000)
-        return () => {
-            clearInterval(timerID)
-        }
-    }, [])
+        setTorrent(props.torrent)
+    }, [props.torrent])
 
-    const update = () => {
+    useEffect(() => {
         if (open)
-            getTorrent(torrent.hash, (torr, error) => {
-                if (error) console.error(error)
-                else if (torr) setTorrent(torr)
-            })
-    }
+            timerID.current = setInterval(() => {
+                getTorrent(torrent.hash, (torr, error) => {
+                    if (error) console.error(error)
+                    else if (torr) setTorrent(torr)
+                })
+            }, 1000)
+        else clearInterval(timerID.current)
+
+        return () => {
+            clearInterval(timerID.current)
+        }
+    }, [open])
 
     return (
         <div>
@@ -81,7 +63,11 @@ export default function Torrent(props) {
                             {torrent.download_speed > 0 ? ' | ' + humanizeSize(torrent.download_speed) + '/sec' : ''}
                         </Typography>
                     </Button>
-                    <Button onClick={deleteHandler}>
+                    <Button
+                        onClick={() => {
+                            deleteTorrent(torrent)
+                        }}
+                    >
                         <DeleteIcon />
                         <Typography>Delete</Typography>
                     </Button>
@@ -99,7 +85,7 @@ export default function Torrent(props) {
                     {torrent.title} {torrent.name && ' | ' + torrent.name}
                 </DialogTitle>
                 <DialogContent>
-                    <TorrentInfo torrent={torrent} start={open} />
+                    <DialogTorrentInfo torrent={torrent} start={open} />
                 </DialogContent>
                 <DialogActions>
                     <Button
@@ -114,8 +100,8 @@ export default function Torrent(props) {
                         color="primary"
                         aria-label="text primary button"
                         onClick={() => {
-                            dropTorrent(torrent)
                             setOpen(false)
+                            dropTorrent(torrent)
                         }}
                     >
                         Drop
@@ -127,37 +113,63 @@ export default function Torrent(props) {
 }
 
 function getTorrent(hash, callback) {
-    fetch('http://127.0.0.1:8090' + '/torrents', {
-        method: 'post',
-        body: JSON.stringify({ action: 'get', hash: hash }),
-        headers: {
-            Accept: 'application/json, text/plain, */*',
-            'Content-Type': 'application/json',
-        },
-    })
-        .then((res) => res.json())
-        .then(
-            (json) => {
-                callback(json, null)
+    try {
+        fetch(torrentsHost, {
+            method: 'post',
+            body: JSON.stringify({ action: 'get', hash: hash }),
+            headers: {
+                Accept: 'application/json, text/plain, */*',
+                'Content-Type': 'application/json',
             },
-            (error) => {
-                callback(null, error)
-            }
-        )
+        })
+            .then((res) => res.json())
+            .then(
+                (json) => {
+                    callback(json, null)
+                },
+                (error) => {
+                    callback(null, error)
+                }
+            )
+    } catch (e) {
+        console.error(e)
+    }
+}
+
+function deleteTorrent(torrent) {
+    try {
+        fetch(torrentsHost, {
+            method: 'post',
+            body: JSON.stringify({
+                action: 'rem',
+                hash: torrent.hash,
+            }),
+            headers: {
+                Accept: 'application/json, text/plain, */*',
+                'Content-Type': 'application/json',
+            },
+        })
+    } catch (e) {
+        console.error(e)
+    }
 }
 
 function dropTorrent(torrent) {
-    fetch('http://127.0.0.1:8090' + '/torrents', {
-        method: 'post',
-        body: JSON.stringify({
-            action: 'drop',
-            hash: torrent.hash,
-        }),
-        headers: {
-            Accept: 'application/json, text/plain, */*',
-            'Content-Type': 'application/json',
-        },
-    })
+    try {
+        fetch(torrentsHost, {
+            method: 'post',
+            body: JSON.stringify({
+                action: 'drop',
+                hash: torrent.hash,
+            }),
+            headers: {
+                Accept: 'application/json, text/plain, */*',
+                'Content-Type': 'application/json',
+            },
+        })
+    } catch (e) {
+        console.error(e)
+    }
 }
 
 /*

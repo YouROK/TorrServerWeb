@@ -1,61 +1,62 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import Container from '@material-ui/core/Container'
 import Torrent from './Torrent'
 import List from '@material-ui/core/List'
 import { Typography } from '@material-ui/core'
+import { torrentsHost } from '../utils/Hosts'
 
-export default class TorrentList extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = { torrents: [], offline: false }
-    }
+export default function TorrentList(props) {
+    const [torrents, setTorrents] = React.useState([])
+    const [offline, setOffline] = React.useState(true)
+    const timerID = useRef(-1)
 
-    componentDidMount() {
-        this.timerID = setInterval(() => this.tick(), 1000)
-    }
+    useEffect(() => {
+        timerID.current = setInterval(() => {
+            getTorrentList((torrs) => {
+                if (torrs) setOffline(false)
+                else setOffline(true)
+                setTorrents(torrs)
+            })
+        }, 1000)
 
-    componentWillUnmount() {
-        clearInterval(this.timerID)
-    }
+        return () => {
+            clearInterval(timerID.current)
+        }
+    }, [])
 
-    tick() {
-        fetch('http://127.0.0.1:8090' + '/torrents', {
-            method: 'post',
-            body: JSON.stringify({ action: 'list' }),
-            headers: {
-                Accept: 'application/json, text/plain, */*',
-                'Content-Type': 'application/json',
+    return (
+        <React.Fragment>
+            <Container maxWidth="lg">
+                {!offline ? (
+                    <List>
+                        {torrents.map((torrent) => (
+                            <Torrent key={torrent.hash} torrent={torrent} />
+                        ))}
+                    </List>
+                ) : (
+                    <Typography>Offline</Typography>
+                )}
+            </Container>
+        </React.Fragment>
+    )
+}
+
+function getTorrentList(callback) {
+    fetch(torrentsHost, {
+        method: 'post',
+        body: JSON.stringify({ action: 'list' }),
+        headers: {
+            Accept: 'application/json, text/plain, */*',
+            'Content-Type': 'application/json',
+        },
+    })
+        .then((res) => res.json())
+        .then(
+            (json) => {
+                callback(json)
             },
-        })
-            .then((res) => res.json())
-            .then(
-                (json) => {
-                    this.setState({
-                        torrents: json,
-                        offline: false,
-                    })
-                },
-                (error) => {
-                    this.setState({ offline: true })
-                }
-            )
-    }
-
-    render() {
-        return (
-            <React.Fragment>
-                <Container maxWidth="lg">
-                    {!this.state.offline ? (
-                        <List>
-                            {this.state.torrents.map((torrent) => (
-                                <Torrent key={torrent.hash} torrent={torrent} />
-                            ))}
-                        </List>
-                    ) : (
-                        <Typography>Offline</Typography>
-                    )}
-                </Container>
-            </React.Fragment>
+            (error) => {
+                callback(null)
+            }
         )
-    }
 }

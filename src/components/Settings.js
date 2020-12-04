@@ -10,6 +10,7 @@ import TextField from '@material-ui/core/TextField'
 import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
 import { FormControlLabel, Switch } from '@material-ui/core'
+import { settingsHost } from '../utils/Hosts'
 
 export default function SettingsDialog() {
     const [open, setOpen] = React.useState(false)
@@ -23,7 +24,7 @@ export default function SettingsDialog() {
     }
     const handleCloseSave = () => {
         setOpen(false)
-        fetch('http://127.0.0.1:8090' + '/settings', {
+        fetch(settingsHost, {
             method: 'post',
             body: JSON.stringify({ action: 'set', sets: settings }),
             headers: {
@@ -34,7 +35,7 @@ export default function SettingsDialog() {
     }
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8090' + '/settings', {
+        fetch(settingsHost, {
             method: 'post',
             body: JSON.stringify({ action: 'get' }),
             headers: {
