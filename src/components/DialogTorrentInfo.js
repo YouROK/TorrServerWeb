@@ -7,7 +7,6 @@ import { humanizeSize } from '../utils/Utils'
 import { playlistTorrHost, streamHost } from '../utils/Hosts'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
-import Dialog from '@material-ui/core/Dialog'
 
 const style = {
     width100: {
@@ -52,7 +51,7 @@ export default function DialogTorrentInfo(props) {
             <DialogContent>
                 <List>
                     <ListItem>
-                        <ButtonGroup style={style.width100} variant="contained" aria-label="contained primary button group">
+                        <ButtonGroup style={style.width100} variant="contained" color="primary" aria-label="contained primary button group">
                             <Button
                                 style={style.width100}
                                 onClick={() => window.open(playlistTorrHost + '/' + encodeURI(torrent.name || torrent.title || 'file') + '.m3u?link=' + torrent.hash + '&m3u', '_blank')}

@@ -38,7 +38,7 @@ export default function DonateDialog() {
                 <DialogContent>
                     <List>
                         <ListItem>
-                            <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
+                            <ButtonGroup variant="outlined" color="primary" aria-label="contained primary button group">
                                 <Button onClick={() => window.open('https://www.paypal.com/paypalme/yourok', '_blank')}>PayPal</Button>
                                 <Button onClick={() => window.open('https://yoomoney.ru/to/410013733697114', '_blank')}>Yandex.Money</Button>
                             </ButtonGroup>
@@ -49,7 +49,7 @@ export default function DonateDialog() {
                     </List>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color="primary">
+                    <Button onClick={handleClose} color="primary" variant="outlined">
                         Ok
                     </Button>
                 </DialogActions>

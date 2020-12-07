@@ -97,10 +97,10 @@ export default function SettingsDialog() {
                     <TextField onChange={inputForm} margin="dense" id="PeersListenPort" label="PeersListenPort" value={settings.PeersListenPort} type="number" fullWidth />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color="primary">
+                    <Button onClick={handleClose} color="primary" variant="outlined">
                         Cancel
                     </Button>
-                    <Button onClick={handleCloseSave} color="primary">
+                    <Button onClick={handleCloseSave} color="primary" variant="outlined">
                         Save
                     </Button>
                 </DialogActions>

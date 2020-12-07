@@ -78,10 +78,10 @@ export default function AddDialog() {
                     <TextField onChange={inputMagnet} autoFocus margin="dense" id="magnet" label="Magnet" type="text" fullWidth />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color="primary">
+                    <Button onClick={handleClose} color="primary" variant="outlined">
                         Cancel
                     </Button>
-                    <Button onClick={handleCloseSave} color="primary">
+                    <Button onClick={handleCloseSave} color="primary" variant="outlined">
                         Add
                     </Button>
                 </DialogActions>

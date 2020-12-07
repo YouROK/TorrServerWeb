@@ -7,11 +7,8 @@ import 'fontsource-roboto'
 import DeleteIcon from '@material-ui/icons/Delete'
 import Typography from '@material-ui/core/Typography'
 import ListItem from '@material-ui/core/ListItem'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import DialogContent from '@material-ui/core/DialogContent'
 import DialogActions from '@material-ui/core/DialogActions'
 import Dialog from '@material-ui/core/Dialog'
-import Image from 'material-ui-image'
 
 import { humanizeSize } from '../utils/Utils'
 
@@ -86,16 +83,17 @@ export default function Torrent(props) {
                 <DialogTorrentInfo torrent={torrent} start={open} />
                 <DialogActions>
                     <Button
+                        variant="outlined"
+                        color="primary"
                         onClick={() => {
                             setOpen(false)
                         }}
-                        color="primary"
                     >
                         OK
                     </Button>
                     <Button
+                        variant="outlined"
                         color="primary"
-                        aria-label="text primary button"
                         onClick={() => {
                             setOpen(false)
                             dropTorrent(torrent)
