@@ -1,5 +1,5 @@
-// export var torrserverHost = ''
-export var torrserverHost = 'http://127.0.0.1:8090'
+export var torrserverHost = ''
+// export var torrserverHost = 'http://127.0.0.1:8090'
 
 export const torrentsHost = () => torrserverHost + '/torrents'
 export const cacheHost = () => torrserverHost + '/cache'
