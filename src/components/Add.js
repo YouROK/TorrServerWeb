@@ -37,6 +37,8 @@ export default function AddDialog() {
 
     const handleCloseSave = () => {
         try {
+            if (!magnet) return
+
             fetch(torrentsHost, {
                 method: 'post',
                 body: JSON.stringify({
