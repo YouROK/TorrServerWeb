@@ -7,7 +7,7 @@ import { torrentsHost } from '../utils/Hosts'
 
 export default function RemoveAll() {
     const fnRemoveAll = () => {
-        fetch(torrentsHost, {
+        fetch(torrentsHost(), {
             method: 'post',
             body: JSON.stringify({ action: 'list' }),
             headers: {
@@ -18,7 +18,7 @@ export default function RemoveAll() {
             .then((res) => res.json())
             .then((json) => {
                 json.forEach((torr) => {
-                    fetch(torrentsHost, {
+                    fetch(torrentsHost(), {
                         method: 'post',
                         body: JSON.stringify({ action: 'rem', hash: torr.hash }),
                         headers: {

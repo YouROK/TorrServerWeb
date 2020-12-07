@@ -18,7 +18,7 @@ export default function UploadDialog() {
         for (let i = 0; i < target.files.length; i++) {
             data.append('file' + i, target.files[i])
         }
-        fetch(torrentUploadHost, {
+        fetch(torrentUploadHost(), {
             method: 'POST',
             body: data,
         })

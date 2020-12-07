@@ -1,17 +1,14 @@
-export const torrentsHost = '/torrents'
-export const torrentUploadHost = '/torrent/upload'
-export const settingsHost = '/settings'
-export const streamHost = '/stream'
-export const shutdownHost = '/shutdown'
-export const echoHost = '/echo'
-export const playlistAllHost = '/playlistall/all.m3u'
-export const playlistTorrHost = '/stream'
+export var torrserverHost = ''
 
-// export const torrentsHost = 'http://127.0.0.1:8090/torrents'
-// export const torrentUploadHost = 'http://127.0.0.1:8090/torrent/upload'
-// export const settingsHost = 'http://127.0.0.1:8090/settings'
-// export const streamHost = 'http://127.0.0.1:8090/stream'
-// export const shutdownHost = 'http://127.0.0.1:8090/shutdown'
-// export const echoHost = 'http://127.0.0.1:8090/echo'
-// export const playlistAllHost = 'http://127.0.0.1:8090/playlistall/all.m3u'
-// export const playlistTorrHost = 'http://127.0.0.1:8090/stream'
+export const torrentsHost = () => torrserverHost + '/torrents'
+export const torrentUploadHost = () => torrserverHost + '/torrent/upload'
+export const settingsHost = () => torrserverHost + '/settings'
+export const streamHost = () => torrserverHost + '/stream'
+export const shutdownHost = () => torrserverHost + '/shutdown'
+export const echoHost = () => torrserverHost + '/echo'
+export const playlistAllHost = () => torrserverHost + '/playlistall/all.m3u'
+export const playlistTorrHost = () => torrserverHost + '/stream'
+
+export const setTorrServerHost = (host) => {
+    torrserverHost = host
+}

@@ -10,11 +10,12 @@ import TextField from '@material-ui/core/TextField'
 import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
 import { FormControlLabel, Switch } from '@material-ui/core'
-import { settingsHost } from '../utils/Hosts'
+import { settingsHost, setTorrServerHost, torrserverHost } from '../utils/Hosts'
 
 export default function SettingsDialog() {
     const [open, setOpen] = React.useState(false)
     const [settings, setSets] = React.useState({})
+    const [tsHost, setTSHost] = React.useState(torrserverHost ? torrserverHost : window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : ''))
 
     const handleClickOpen = () => {
         setOpen(true)
@@ -27,7 +28,7 @@ export default function SettingsDialog() {
         let sets = settings
         sets.CacheSize *= 1024 * 1024
         sets.PreloadBufferSize *= 1024 * 1024
-        fetch(settingsHost, {
+        fetch(settingsHost(), {
             method: 'post',
             body: JSON.stringify({ action: 'set', sets: sets }),
             headers: {
@@ -38,7 +39,7 @@ export default function SettingsDialog() {
     }
 
     useEffect(() => {
-        fetch(settingsHost, {
+        fetch(settingsHost(), {
             method: 'post',
             body: JSON.stringify({ action: 'get' }),
             headers: {
@@ -57,7 +58,13 @@ export default function SettingsDialog() {
                     console.log(error)
                 }
             )
-    }, [])
+    }, [tsHost])
+
+    const onInputHost = (event) => {
+        let host = event.target.value
+        setTorrServerHost(host)
+        setTSHost(host)
+    }
 
     const inputForm = (event) => {
         let sets = JSON.parse(JSON.stringify(settings))
@@ -80,6 +87,7 @@ export default function SettingsDialog() {
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth={true}>
                 <DialogTitle id="form-dialog-title">Settings</DialogTitle>
                 <DialogContent>
+                    <TextField onChange={onInputHost} margin="dense" id="TorrServerHost" label="Host" value={tsHost} type="url" fullWidth />
                     <TextField onChange={inputForm} margin="dense" id="CacheSize" label="CacheSize" value={settings.CacheSize} type="number" fullWidth />
                     <TextField onChange={inputForm} margin="dense" id="PreloadBufferSize" label="PreloadBufferSize" value={settings.PreloadBufferSize} type="number" fullWidth />
                     <TextField onChange={inputForm} margin="dense" id="RetrackersMode" label="RetrackersMode" value={settings.RetrackersMode} type="text" fullWidth />

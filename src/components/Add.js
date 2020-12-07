@@ -39,7 +39,7 @@ export default function AddDialog() {
         try {
             if (!magnet) return
 
-            fetch(torrentsHost, {
+            fetch(torrentsHost(), {
                 method: 'post',
                 body: JSON.stringify({
                     action: 'add',

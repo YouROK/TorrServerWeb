@@ -5,7 +5,7 @@ import List from '@material-ui/core/List'
 import { Typography } from '@material-ui/core'
 import { torrentsHost } from '../utils/Hosts'
 
-export default function TorrentList(props) {
+export default function TorrentList(props, onChange) {
     const [torrents, setTorrents] = React.useState([])
     const [offline, setOffline] = React.useState(true)
     const timerID = useRef(-1)
@@ -32,7 +32,7 @@ export default function TorrentList(props) {
 }
 
 function getTorrentList(callback) {
-    fetch(torrentsHost, {
+    fetch(torrentsHost(), {
         method: 'post',
         body: JSON.stringify({ action: 'list' }),
         headers: {

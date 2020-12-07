@@ -32,9 +32,9 @@ export default function DialogTorrentInfo(props) {
         <div>
             <DialogTitle id="form-dialog-title">
                 <Grid container spacing={1}>
-                    <Grid item>{torrent.poster && <img height="200" align="left" style={style.poster} src={torrent.poster} />}</Grid>
+                    <Grid item>{torrent.poster && <img alt="" height="200" align="left" style={style.poster} src={torrent.poster} />}</Grid>
                     <Grid style={style.width80} item>
-                        {torrent.title} {torrent.name && torrent.name != torrent.title && ' | ' + torrent.name}
+                        {torrent.title} {torrent.name && torrent.name !== torrent.title && ' | ' + torrent.name}
                         <Typography>
                             <b>Peers: </b> {getPeer(torrent)}
                             <br />
@@ -54,13 +54,13 @@ export default function DialogTorrentInfo(props) {
                         <ButtonGroup style={style.width100} variant="contained" color="primary" aria-label="contained primary button group">
                             <Button
                                 style={style.width100}
-                                onClick={() => window.open(playlistTorrHost + '/' + encodeURI(torrent.name || torrent.title || 'file') + '.m3u?link=' + torrent.hash + '&m3u', '_blank')}
+                                onClick={() => window.open(playlistTorrHost() + '/' + encodeURI(torrent.name || torrent.title || 'file') + '.m3u?link=' + torrent.hash + '&m3u', '_blank')}
                             >
                                 Playlist
                             </Button>
                             <Button
                                 style={style.width100}
-                                onClick={() => window.open(playlistTorrHost + '/' + encodeURI(torrent.name || torrent.title || 'file') + '.m3u?link=' + torrent.hash + '&m3u&fromlast', '_blank')}
+                                onClick={() => window.open(playlistTorrHost() + '/' + encodeURI(torrent.name || torrent.title || 'file') + '.m3u?link=' + torrent.hash + '&m3u&fromlast', '_blank')}
                             >
                                 Playlist after last view
                             </Button>
@@ -71,7 +71,7 @@ export default function DialogTorrentInfo(props) {
                             <ButtonGroup style={style.width100} disableElevation variant="contained" color="primary">
                                 <Button
                                     style={style.width100}
-                                    href={streamHost + '/' + encodeURI(file.path.split('\\').pop().split('/').pop()) + '?link=' + torrent.hash + '&index=' + file.id + '&play'}
+                                    href={streamHost() + '/' + encodeURI(file.path.split('\\').pop().split('/').pop()) + '?link=' + torrent.hash + '&index=' + file.id + '&play'}
                                     // onClick={() => window.open(streamHost + '/' + encodeURI(file.path.split('\\').pop().split('/').pop()) + '?link=' + torrent.hash + '&index=' + file.id + '&play', '_blank')}
                                 >
                                     <Typography>

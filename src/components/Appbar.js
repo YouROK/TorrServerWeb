@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import clsx from 'clsx'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/Drawer'
@@ -25,7 +25,7 @@ import { Box } from '@material-ui/core'
 import AddDialog from './Add'
 import RemoveAll from './RemoveAll'
 import SettingsDialog from './Settings'
-import { playlistAllHost, shutdownHost } from '../utils/Hosts'
+import { playlistAllHost, shutdownHost, torrserverHost } from '../utils/Hosts'
 import DonateDialog from './Donate'
 import UploadDialog from './Upload'
 
@@ -97,6 +97,7 @@ export default function MiniDrawer() {
     const classes = useStyles()
     const theme = useTheme()
     const [open, setOpen] = React.useState(false)
+    const [tsVersion, setTSVersion] = React.useState('')
 
     const handleDrawerOpen = () => {
         setOpen(true)
@@ -105,6 +106,14 @@ export default function MiniDrawer() {
     const handleDrawerClose = () => {
         setOpen(false)
     }
+
+    useEffect(() => {
+        fetch(torrserverHost + '/echo')
+            .then((resp) => resp.text())
+            .then((txt) => {
+                if (!txt.startsWith('<!DOCTYPE html>')) setTSVersion(txt)
+            })
+    }, [open])
 
     return (
         <div className={classes.root}>
@@ -128,7 +137,7 @@ export default function MiniDrawer() {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap>
-                        TorrServer
+                        TorrServer {tsVersion}
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -157,14 +166,14 @@ export default function MiniDrawer() {
                 </List>
                 <Divider />
                 <List>
-                    <ListItem button key="Playlist all torrents" onClick={() => window.open(playlistAllHost, '_blank')}>
+                    <ListItem button key="Playlist all torrents" onClick={() => window.open(playlistAllHost(), '_blank')}>
                         <ListItemIcon>
                             <ListIcon />
                         </ListItemIcon>
                         <ListItemText primary="Playlist all torrents" />
                     </ListItem>
                     <SettingsDialog />
-                    <ListItem button key="Close server" onClick={() => fetch(shutdownHost)}>
+                    <ListItem button key="Close server" onClick={() => fetch(shutdownHost())}>
                         <ListItemIcon>
                             <PowerSettingsNewIcon />
                         </ListItemIcon>

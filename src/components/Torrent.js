@@ -109,7 +109,7 @@ export default function Torrent(props) {
 
 function getTorrent(hash, callback) {
     try {
-        fetch(torrentsHost, {
+        fetch(torrentsHost(), {
             method: 'post',
             body: JSON.stringify({ action: 'get', hash: hash }),
             headers: {
@@ -133,7 +133,7 @@ function getTorrent(hash, callback) {
 
 function deleteTorrent(torrent) {
     try {
-        fetch(torrentsHost, {
+        fetch(torrentsHost(), {
             method: 'post',
             body: JSON.stringify({
                 action: 'rem',
@@ -151,7 +151,7 @@ function deleteTorrent(torrent) {
 
 function dropTorrent(torrent) {
     try {
-        fetch(torrentsHost, {
+        fetch(torrentsHost(), {
             method: 'post',
             body: JSON.stringify({
                 action: 'drop',
