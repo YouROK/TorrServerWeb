@@ -14,7 +14,7 @@ import { humanizeSize } from '../utils/Utils'
 
 import DialogTorrentInfo from './DialogTorrentInfo'
 import { torrentsHost } from '../utils/Hosts'
-import CacheDialog from './CacheDialog'
+import DialogCacheInfo from './DialogCacheInfo'
 import DataUsageIcon from '@material-ui/icons/DataUsage'
 
 const style = {
@@ -24,8 +24,8 @@ const style = {
 }
 
 export default function Torrent(props) {
-    const [openTorr, setOpenTorr] = React.useState(false)
-    const [openCache, setOpenCache] = React.useState(false)
+    const [open, setOpen] = React.useState(false)
+    const [showCache, setShowCache] = React.useState(false)
     const [torrent, setTorrent] = React.useState(props.torrent)
     const timerID = useRef(-1)
 
@@ -34,7 +34,7 @@ export default function Torrent(props) {
     }, [props.torrent])
 
     useEffect(() => {
-        if (openTorr)
+        if (open)
             timerID.current = setInterval(() => {
                 getTorrent(torrent.hash, (torr, error) => {
                     if (error) console.error(error)
@@ -46,7 +46,7 @@ export default function Torrent(props) {
         return () => {
             clearInterval(timerID.current)
         }
-    }, [torrent.hash, openTorr])
+    }, [torrent.hash, open])
 
     return (
         <div>
@@ -55,7 +55,8 @@ export default function Torrent(props) {
                     <Button
                         style={style.width100}
                         onClick={() => {
-                            setOpenTorr(true)
+                            setShowCache(false)
+                            setOpen(true)
                         }}
                     >
                         <Typography>
@@ -66,13 +67,13 @@ export default function Torrent(props) {
                     </Button>
                     <Button
                         onClick={() => {
-                            setOpenCache(true)
+                            setShowCache(true)
+                            setOpen(true)
                         }}
                     >
                         <DataUsageIcon />
                         <Typography>Cache</Typography>
                     </Button>
-                    <CacheDialog hash={torrent.hash} open={openCache} />
                     <Button
                         onClick={() => {
                             deleteTorrent(torrent)
@@ -84,21 +85,21 @@ export default function Torrent(props) {
                 </ButtonGroup>
             </ListItem>
             <Dialog
-                open={openTorr}
+                open={open}
                 onClose={() => {
-                    setOpenTorr(false)
+                    setOpen(false)
                 }}
                 aria-labelledby="form-dialog-title"
                 fullWidth={true}
                 maxWidth={'lg'}
             >
-                <DialogTorrentInfo torrent={torrent} start={openTorr} />
+                {!showCache ? <DialogTorrentInfo torrent={torrent} /> : <DialogCacheInfo hash={torrent.hash} />}
                 <DialogActions>
                     <Button
                         variant="outlined"
                         color="primary"
                         onClick={() => {
-                            setOpenTorr(false)
+                            setOpen(false)
                         }}
                     >
                         OK
@@ -107,7 +108,7 @@ export default function Torrent(props) {
                         variant="outlined"
                         color="primary"
                         onClick={() => {
-                            setOpenTorr(false)
+                            setOpen(false)
                             dropTorrent(torrent)
                         }}
                     >

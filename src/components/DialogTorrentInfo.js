@@ -72,13 +72,12 @@ export default function DialogTorrentInfo(props) {
                                 <Button
                                     style={style.width100}
                                     href={streamHost() + '/' + encodeURI(file.path.split('\\').pop().split('/').pop()) + '?link=' + torrent.hash + '&index=' + file.id + '&play'}
-                                    // onClick={() => window.open(streamHost + '/' + encodeURI(file.path.split('\\').pop().split('/').pop()) + '?link=' + torrent.hash + '&index=' + file.id + '&play', '_blank')}
                                 >
                                     <Typography>
                                         {file.path.split('\\').pop().split('/').pop()} | {humanizeSize(file.length)}
                                     </Typography>
                                 </Button>
-                                <Button onClick={() => fetch(streamHost + '?link=' + torrent.hash + '&index=' + file.id + '&preload')}>
+                                <Button onClick={() => fetch(streamHost() + '?link=' + torrent.hash + '&index=' + file.id + '&preload')}>
                                     <CachedIcon />
                                     <Typography>Preload</Typography>
                                 </Button>
