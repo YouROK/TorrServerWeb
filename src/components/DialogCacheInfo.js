@@ -29,31 +29,23 @@ export default function DialogCacheInfo(props) {
         <div>
             <DialogTitle id="form-dialog-title">
                 <Typography fullWidth>
-                    <b>Hash </b>
-                    {cache.Hash}
-                </Typography>
-                <Typography fullWidth>
-                    <b>Capacity </b>
-                    {humanizeSize(cache.Capacity)}
-                </Typography>
-                <Typography fullWidth>
-                    <b>Filled </b>
-                    {humanizeSize(cache.Filled)}
-                </Typography>
-                <Typography fullWidth>
-                    <b>Pieces length </b>
-                    {humanizeSize(cache.PiecesLength)}
-                </Typography>
-                <Typography fullWidth>
-                    <b>Pieces count </b>
-                    {cache.PiecesCount}
-                </Typography>
-                <Typography>
+                    <b>Hash </b> {cache.Hash}
+                    <br />
+                    <b>Capacity </b> {humanizeSize(cache.Capacity)}
+                    <br />
+                    <b>Filled </b> {humanizeSize(cache.Filled)}
+                    <br />
+                    <b>Torrent size </b> {cache.Torrent && cache.Torrent.torrent_size && humanizeSize(cache.Torrent.torrent_size)}
+                    <br />
+                    <b>Pieces length </b> {humanizeSize(cache.PiecesLength)}
+                    <br />
+                    <b>Pieces count </b> {cache.PiecesCount}
+                    <br />
                     <b>Peers: </b> {getPeerString(cache.Torrent)}
-                </Typography>
-                <Typography fullWidth>
-                    <b>Download speed </b>
-                    {cache.Torrent && cache.Torrent.download_speed ? humanizeSize(cache.Torrent.download_speed) + '/sec' : ''}
+                    <br />
+                    <b>Download speed </b> {cache.Torrent && cache.Torrent.download_speed ? humanizeSize(cache.Torrent.download_speed) + '/sec' : ''}
+                    <br />
+                    <b>Status </b> {cache.Torrent && cache.Torrent.stat_string && cache.Torrent.stat_string}
                 </Typography>
             </DialogTitle>
             <DialogContent>

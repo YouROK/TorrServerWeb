@@ -9,7 +9,7 @@ import DialogContent from '@material-ui/core/DialogContent'
 import TextField from '@material-ui/core/TextField'
 import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
-import { FormControlLabel, Switch } from '@material-ui/core'
+import { FormControlLabel, InputLabel, MenuItem, NativeSelect, Select, Switch } from '@material-ui/core'
 import { settingsHost, setTorrServerHost, torrserverHost } from '../utils/Hosts'
 
 export default function SettingsDialog() {
@@ -68,7 +68,7 @@ export default function SettingsDialog() {
 
     const inputForm = (event) => {
         let sets = JSON.parse(JSON.stringify(settings))
-        if (event.target.type === 'number') {
+        if (event.target.type === 'number' || event.target.type === 'select-one') {
             sets[event.target.id] = Number(event.target.value)
         } else if (event.target.type === 'checkbox') {
             sets[event.target.id] = Boolean(event.target.checked)
@@ -90,7 +90,15 @@ export default function SettingsDialog() {
                     <TextField onChange={onInputHost} margin="dense" id="TorrServerHost" label="Host" value={tsHost} type="url" fullWidth />
                     <TextField onChange={inputForm} margin="dense" id="CacheSize" label="Cache size" value={settings.CacheSize} type="number" fullWidth />
                     <TextField onChange={inputForm} margin="dense" id="PreloadBufferSize" label="Preload size" value={settings.PreloadBufferSize} type="number" fullWidth />
-                    <TextField onChange={inputForm} margin="dense" id="RetrackersMode" label="Retrackers mode" value={settings.RetrackersMode} type="text" fullWidth />
+                    <h1 />
+                    <InputLabel htmlFor="RetrackersMode">Retracker mode</InputLabel>
+                    <Select onChange={inputForm} type="number" native="true" id="RetrackersMode" value={settings.RetrackersMode}>
+                        <option value={0}>Don't add retrackers</option>
+                        <option value={1}>Add retrackers</option>
+                        <option value={2}>Remove retrackers</option>
+                        <option value={3}>Replace retrackers</option>
+                    </Select>
+                    <h1 />
                     <TextField onChange={inputForm} margin="dense" id="TorrentDisconnectTimeout" label="Torrent disconnect timeout" value={settings.TorrentDisconnectTimeout} type="text" fullWidth />
                     <FormControlLabel control={<Switch checked={settings.EnableIPv6} onChange={inputForm} id="EnableIPv6" color="primary" />} label="Enable IPv6" />
                     <FormControlLabel control={<Switch checked={settings.DisableTCP} onChange={inputForm} id="DisableTCP" color="primary" />} label="Disable TCP" />
@@ -103,6 +111,13 @@ export default function SettingsDialog() {
                     <TextField onChange={inputForm} margin="dense" id="ConnectionsLimit" label="Connections limit" value={settings.ConnectionsLimit} type="number" fullWidth />
                     <TextField onChange={inputForm} margin="dense" id="DhtConnectionLimit" label="Dht connection limit" value={settings.DhtConnectionLimit} type="number" fullWidth />
                     <TextField onChange={inputForm} margin="dense" id="PeersListenPort" label="Peers listen port" value={settings.PeersListenPort} type="number" fullWidth />
+                    <h1 />
+                    <InputLabel id="Strategy">Strategy</InputLabel>
+                    <Select onChange={inputForm} type="number" native="true" id="Strategy" value={settings.Strategy}>
+                        <option value={0}>DuplicateRequestTimeout</option>
+                        <option value={1}>Fuzzing</option>
+                        <option value={2}>Fastest</option>
+                    </Select>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary" variant="outlined">
