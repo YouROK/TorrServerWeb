@@ -88,21 +88,21 @@ export default function SettingsDialog() {
                 <DialogTitle id="form-dialog-title">Settings</DialogTitle>
                 <DialogContent>
                     <TextField onChange={onInputHost} margin="dense" id="TorrServerHost" label="Host" value={tsHost} type="url" fullWidth />
-                    <TextField onChange={inputForm} margin="dense" id="CacheSize" label="CacheSize" value={settings.CacheSize} type="number" fullWidth />
-                    <TextField onChange={inputForm} margin="dense" id="PreloadBufferSize" label="PreloadBufferSize" value={settings.PreloadBufferSize} type="number" fullWidth />
-                    <TextField onChange={inputForm} margin="dense" id="RetrackersMode" label="RetrackersMode" value={settings.RetrackersMode} type="text" fullWidth />
-                    <TextField onChange={inputForm} margin="dense" id="TorrentDisconnectTimeout" label="TorrentDisconnectTimeout" value={settings.TorrentDisconnectTimeout} type="text" fullWidth />
-                    <FormControlLabel control={<Switch checked={settings.EnableIPv6} onChange={inputForm} id="EnableIPv6" color="primary" />} label="EnableIPv6" />
-                    <FormControlLabel control={<Switch checked={settings.DisableTCP} onChange={inputForm} id="DisableTCP" color="primary" />} label="DisableTCP" />
-                    <FormControlLabel control={<Switch checked={settings.DisableUTP} onChange={inputForm} id="DisableUTP" color="primary" />} label="DisableUTP" />
-                    <FormControlLabel control={<Switch checked={settings.DisableUPNP} onChange={inputForm} id="DisableUPNP" color="primary" />} label="DisableUPNP" />
-                    <FormControlLabel control={<Switch checked={settings.DisableDHT} onChange={inputForm} id="DisableDHT" color="primary" />} label="DisableDHT" />
-                    <FormControlLabel control={<Switch checked={settings.DisableUpload} onChange={inputForm} id="DisableUpload" color="primary" />} label="DisableUpload" />
-                    <TextField onChange={inputForm} margin="dense" id="DownloadRateLimit" label="DownloadRateLimit" value={settings.DownloadRateLimit} type="number" fullWidth />
-                    <TextField onChange={inputForm} margin="dense" id="UploadRateLimit" label="UploadRateLimit" value={settings.UploadRateLimit} type="number" fullWidth />
-                    <TextField onChange={inputForm} margin="dense" id="ConnectionsLimit" label="ConnectionsLimit" value={settings.ConnectionsLimit} type="number" fullWidth />
-                    <TextField onChange={inputForm} margin="dense" id="DhtConnectionLimit" label="DhtConnectionLimit" value={settings.DhtConnectionLimit} type="number" fullWidth />
-                    <TextField onChange={inputForm} margin="dense" id="PeersListenPort" label="PeersListenPort" value={settings.PeersListenPort} type="number" fullWidth />
+                    <TextField onChange={inputForm} margin="dense" id="CacheSize" label="Cache size" value={settings.CacheSize} type="number" fullWidth />
+                    <TextField onChange={inputForm} margin="dense" id="PreloadBufferSize" label="Preload size" value={settings.PreloadBufferSize} type="number" fullWidth />
+                    <TextField onChange={inputForm} margin="dense" id="RetrackersMode" label="Retrackers mode" value={settings.RetrackersMode} type="text" fullWidth />
+                    <TextField onChange={inputForm} margin="dense" id="TorrentDisconnectTimeout" label="Torrent disconnect timeout" value={settings.TorrentDisconnectTimeout} type="text" fullWidth />
+                    <FormControlLabel control={<Switch checked={settings.EnableIPv6} onChange={inputForm} id="EnableIPv6" color="primary" />} label="Enable IPv6" />
+                    <FormControlLabel control={<Switch checked={settings.DisableTCP} onChange={inputForm} id="DisableTCP" color="primary" />} label="Disable TCP" />
+                    <FormControlLabel control={<Switch checked={settings.DisableUTP} onChange={inputForm} id="DisableUTP" color="primary" />} label="Disable UTP" />
+                    <FormControlLabel control={<Switch checked={settings.DisableUPNP} onChange={inputForm} id="DisableUPNP" color="primary" />} label="Disable UPNP" />
+                    <FormControlLabel control={<Switch checked={settings.DisableDHT} onChange={inputForm} id="DisableDHT" color="primary" />} label="Disable DHT" />
+                    <FormControlLabel control={<Switch checked={settings.DisableUpload} onChange={inputForm} id="DisableUpload" color="primary" />} label="Disable upload" />
+                    <TextField onChange={inputForm} margin="dense" id="DownloadRateLimit" label="Download rate limit" value={settings.DownloadRateLimit} type="number" fullWidth />
+                    <TextField onChange={inputForm} margin="dense" id="UploadRateLimit" label="Upload rate limit" value={settings.UploadRateLimit} type="number" fullWidth />
+                    <TextField onChange={inputForm} margin="dense" id="ConnectionsLimit" label="Connections limit" value={settings.ConnectionsLimit} type="number" fullWidth />
+                    <TextField onChange={inputForm} margin="dense" id="DhtConnectionLimit" label="Dht connection limit" value={settings.DhtConnectionLimit} type="number" fullWidth />
+                    <TextField onChange={inputForm} margin="dense" id="PeersListenPort" label="Peers listen port" value={settings.PeersListenPort} type="number" fullWidth />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary" variant="outlined">
