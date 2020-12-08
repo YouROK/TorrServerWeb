@@ -3,7 +3,7 @@ import Typography from '@material-ui/core/Typography'
 import { Button, ButtonGroup, Grid, List, ListItem } from '@material-ui/core'
 import CachedIcon from '@material-ui/icons/Cached'
 
-import { humanizeSize } from '../utils/Utils'
+import { getPeerString, humanizeSize } from '../utils/Utils'
 import { playlistTorrHost, streamHost } from '../utils/Hosts'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -36,7 +36,7 @@ export default function DialogTorrentInfo(props) {
                     <Grid style={style.width80} item>
                         {torrent.title} {torrent.name && torrent.name !== torrent.title && ' | ' + torrent.name}
                         <Typography>
-                            <b>Peers: </b> {getPeer(torrent)}
+                            <b>Peers: </b> {getPeerString(torrent)}
                             <br />
                             <b>Loaded: </b> {getPreload(torrent)}
                             <br />
@@ -98,9 +98,4 @@ function getPreload(torrent) {
     if (!torrent.preloaded_bytes) return humanizeSize(0)
 
     return humanizeSize(torrent.preloaded_bytes)
-}
-
-function getPeer(torrent) {
-    if (!torrent.connected_seeders) return '[0] 0 / 0'
-    return '[' + torrent.connected_seeders + '] ' + torrent.active_peers + ' / ' + torrent.total_peers
 }

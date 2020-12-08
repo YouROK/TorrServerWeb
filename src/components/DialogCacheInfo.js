@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import Typography from '@material-ui/core/Typography'
 
-import { humanizeSize } from '../utils/Utils'
+import { getPeerString, humanizeSize } from '../utils/Utils'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
 import { cacheHost } from '../utils/Hosts'
@@ -48,9 +48,12 @@ export default function DialogCacheInfo(props) {
                     <b>Pieces count </b>
                     {cache.PiecesCount}
                 </Typography>
+                <Typography>
+                    <b>Peers: </b> {getPeerString(cache.Torrent)}
+                </Typography>
                 <Typography fullWidth>
                     <b>Download speed </b>
-                    {cache.DownloadSpeed ? humanizeSize(cache.DownloadSpeed) + '/sec' : ''}
+                    {cache.Torrent && cache.Torrent.download_speed ? humanizeSize(cache.Torrent.download_speed) + '/sec' : ''}
                 </Typography>
             </DialogTitle>
             <DialogContent>
@@ -67,15 +70,18 @@ function getCacheMap(cache) {
         html += "<span class='piece"
         if (cache.Pieces && cache.Pieces[i]) {
             let piece = cache.Pieces[i]
-            if (piece.Completed && piece.Size >= piece.Length) html += ' piece-complete'
-            else html += ' piece-loading'
+            if (piece.ReaderType === 0) {
+                if (piece.Completed && piece.Size >= piece.Length) html += ' piece-complete'
+                else html += ' piece-loading'
+            } else {
+                if (piece.ReaderType === 1) html += ' piece-player'
+                else if (piece.ReaderType === 2) html += ' piece-buffering'
+            }
         }
         html += "' title='" + i + "'></span>"
     }
     return html
 }
-
-function getPiece(cache, i) {}
 
 function getCache(hash, callback) {
     try {
