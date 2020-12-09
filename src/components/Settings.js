@@ -25,7 +25,7 @@ export default function SettingsDialog() {
     }
     const handleCloseSave = () => {
         setOpen(false)
-        let sets = settings
+        let sets = JSON.parse(JSON.stringify(settings))
         sets.CacheSize *= 1024 * 1024
         sets.PreloadBufferSize *= 1024 * 1024
         fetch(settingsHost(), {
