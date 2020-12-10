@@ -26,7 +26,7 @@ export default function DialogTorrentInfo(props) {
 
     useEffect(() => {
         setTorrent(props.torrent)
-    }, [props.torrent])
+    }, [props.torrent, props.open])
 
     return (
         <div>

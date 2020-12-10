@@ -93,7 +93,7 @@ export default function Torrent(props) {
                 fullWidth={true}
                 maxWidth={'lg'}
             >
-                {!showCache ? <DialogTorrentInfo torrent={torrent} /> : <DialogCacheInfo hash={torrent.hash} />}
+                {!showCache ? <DialogTorrentInfo torrent={(open, torrent)} /> : <DialogCacheInfo hash={(open, torrent.hash)} />}
                 <DialogActions>
                     <Button
                         variant="outlined"
