@@ -23,7 +23,7 @@ export default function DialogCacheInfo(props) {
         return () => {
             clearInterval(timerID.current)
         }
-    }, [hash])
+    }, [hash, props.open])
 
     return (
         <div>
@@ -60,17 +60,25 @@ function getCacheMap(cache) {
     var html = ''
     for (let i = 0; i < cache.PiecesCount; i++) {
         html += "<span class='piece"
+        let info = i
         if (cache.Pieces && cache.Pieces[i]) {
             let piece = cache.Pieces[i]
-            if (piece.ReaderType === 0) {
-                if (piece.Completed && piece.Size >= piece.Length) html += ' piece-complete'
-                else html += ' piece-loading'
-            } else {
-                if (piece.ReaderType === 1) html += ' piece-player'
-                else if (piece.ReaderType === 2) html += ' piece-buffering'
+            info += ' ' + cache.Pieces[i].Size + '/' + cache.Pieces[i].Length
+            if (piece.Completed && piece.Size >= piece.Length) html += ' piece-complete'
+            else html += ' piece-loading'
+
+            if (piece.ReaderType === 1) {
+                html += ' piece-player'
+                info += ' player reader'
+            } else if (piece.ReaderType === 2) {
+                html += ' piece-buffering'
+                info += ' end buffering'
+            } else if (piece.ReaderType === 3) {
+                html += ' piece-prereader'
+                info += ' buffering reader'
             }
         }
-        html += "' title='" + i + "'></span>"
+        html += "' title='" + info + "'></span>"
     }
     return html
 }
