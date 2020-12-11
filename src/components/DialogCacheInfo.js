@@ -68,14 +68,14 @@ function getCacheMap(cache) {
             else html += ' piece-loading'
 
             if (piece.ReaderType === 1) {
-                html += ' piece-player'
-                info += ' player reader'
+                html += ' piece-start-buffer'
+                info += ' start buffering'
             } else if (piece.ReaderType === 2) {
-                html += ' piece-buffering'
+                html += ' piece-end-buffer'
                 info += ' end buffering'
             } else if (piece.ReaderType === 3) {
-                html += ' piece-prereader'
-                info += ' buffering reader'
+                html += ' piece-reader'
+                info += ' reader'
             }
         }
         html += "' title='" + info + "'></span>"
