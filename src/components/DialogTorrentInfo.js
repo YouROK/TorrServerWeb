@@ -52,16 +52,10 @@ export default function DialogTorrentInfo(props) {
                 <List>
                     <ListItem>
                         <ButtonGroup style={style.width100} variant="contained" color="primary" aria-label="contained primary button group">
-                            <Button
-                                style={style.width100}
-                                onClick={() => window.open(playlistTorrHost() + '/' + encodeURI(torrent.name || torrent.title || 'file') + '.m3u?link=' + torrent.hash + '&m3u', '_blank')}
-                            >
+                            <Button style={style.width100} href={playlistTorrHost() + '/' + encodeURI(torrent.name || torrent.title || 'file') + '.m3u?link=' + torrent.hash + '&m3u'}>
                                 Playlist
                             </Button>
-                            <Button
-                                style={style.width100}
-                                onClick={() => window.open(playlistTorrHost() + '/' + encodeURI(torrent.name || torrent.title || 'file') + '.m3u?link=' + torrent.hash + '&m3u&fromlast', '_blank')}
-                            >
+                            <Button style={style.width100} href={playlistTorrHost() + '/' + encodeURI(torrent.name || torrent.title || 'file') + '.m3u?link=' + torrent.hash + '&m3u&fromlast'}>
                                 Playlist after last view
                             </Button>
                         </ButtonGroup>
