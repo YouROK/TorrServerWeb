@@ -7,7 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent'
 import { cacheHost } from '../utils/Hosts'
 
 export default function DialogCacheInfo(props) {
-    const [hash, setHash] = React.useState(props.hash)
+    const [hash] = React.useState(props.hash)
     const [cache, setCache] = React.useState({})
     const timerID = useRef(-1)
 

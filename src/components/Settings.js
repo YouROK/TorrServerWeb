@@ -9,7 +9,7 @@ import DialogContent from '@material-ui/core/DialogContent'
 import TextField from '@material-ui/core/TextField'
 import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
-import { FormControlLabel, InputLabel, MenuItem, NativeSelect, Select, Switch } from '@material-ui/core'
+import { FormControlLabel, InputLabel, Select, Switch } from '@material-ui/core'
 import { settingsHost, setTorrServerHost, torrserverHost } from '../utils/Hosts'
 
 export default function SettingsDialog() {
