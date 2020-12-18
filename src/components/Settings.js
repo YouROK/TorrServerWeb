@@ -15,6 +15,7 @@ import { settingsHost, setTorrServerHost, torrserverHost } from '../utils/Hosts'
 export default function SettingsDialog() {
     const [open, setOpen] = React.useState(false)
     const [settings, setSets] = React.useState({})
+    const [show, setShow] = React.useState(false)
     const [tsHost, setTSHost] = React.useState(torrserverHost ? torrserverHost : window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : ''))
 
     const handleClickOpen = () => {
@@ -53,11 +54,17 @@ export default function SettingsDialog() {
                     json.CacheSize /= 1024 * 1024
                     json.PreloadBufferSize /= 1024 * 1024
                     setSets(json)
+                    setShow(true)
                 },
                 (error) => {
+                    setShow(false)
                     console.log(error)
                 }
             )
+            .catch((e) => {
+                setShow(false)
+                console.log(e)
+            })
     }, [tsHost])
 
     const onInputHost = (event) => {
@@ -88,36 +95,56 @@ export default function SettingsDialog() {
                 <DialogTitle id="form-dialog-title">Settings</DialogTitle>
                 <DialogContent>
                     <TextField onChange={onInputHost} margin="dense" id="TorrServerHost" label="Host" value={tsHost} type="url" fullWidth />
-                    <TextField onChange={inputForm} margin="dense" id="CacheSize" label="Cache size" value={settings.CacheSize} type="number" fullWidth />
-                    <TextField onChange={inputForm} margin="dense" id="PreloadBufferSize" label="Preload size" value={settings.PreloadBufferSize} type="number" fullWidth />
-                    <h1 />
-                    <InputLabel htmlFor="RetrackersMode">Retracker mode</InputLabel>
-                    <Select onChange={inputForm} type="number" native="true" id="RetrackersMode" value={settings.RetrackersMode}>
-                        <option value={0}>Don't add retrackers</option>
-                        <option value={1}>Add retrackers</option>
-                        <option value={2}>Remove retrackers</option>
-                        <option value={3}>Replace retrackers</option>
-                    </Select>
-                    <h1 />
-                    <TextField onChange={inputForm} margin="dense" id="TorrentDisconnectTimeout" label="Torrent disconnect timeout" value={settings.TorrentDisconnectTimeout} type="text" fullWidth />
-                    <FormControlLabel control={<Switch checked={settings.EnableIPv6} onChange={inputForm} id="EnableIPv6" color="primary" />} label="Enable IPv6" />
-                    <FormControlLabel control={<Switch checked={settings.DisableTCP} onChange={inputForm} id="DisableTCP" color="primary" />} label="Disable TCP" />
-                    <FormControlLabel control={<Switch checked={settings.DisableUTP} onChange={inputForm} id="DisableUTP" color="primary" />} label="Disable UTP" />
-                    <FormControlLabel control={<Switch checked={settings.DisableUPNP} onChange={inputForm} id="DisableUPNP" color="primary" />} label="Disable UPNP" />
-                    <FormControlLabel control={<Switch checked={settings.DisableDHT} onChange={inputForm} id="DisableDHT" color="primary" />} label="Disable DHT" />
-                    <FormControlLabel control={<Switch checked={settings.DisableUpload} onChange={inputForm} id="DisableUpload" color="primary" />} label="Disable upload" />
-                    <TextField onChange={inputForm} margin="dense" id="DownloadRateLimit" label="Download rate limit" value={settings.DownloadRateLimit} type="number" fullWidth />
-                    <TextField onChange={inputForm} margin="dense" id="UploadRateLimit" label="Upload rate limit" value={settings.UploadRateLimit} type="number" fullWidth />
-                    <TextField onChange={inputForm} margin="dense" id="ConnectionsLimit" label="Connections limit" value={settings.ConnectionsLimit} type="number" fullWidth />
-                    <TextField onChange={inputForm} margin="dense" id="DhtConnectionLimit" label="Dht connection limit" value={settings.DhtConnectionLimit} type="number" fullWidth />
-                    <TextField onChange={inputForm} margin="dense" id="PeersListenPort" label="Peers listen port" value={settings.PeersListenPort} type="number" fullWidth />
-                    <h1 />
-                    <InputLabel id="Strategy">Strategy</InputLabel>
-                    <Select onChange={inputForm} type="number" native="true" id="Strategy" value={settings.Strategy}>
-                        <option value={0}>DuplicateRequestTimeout</option>
-                        <option value={1}>Fuzzing</option>
-                        <option value={2}>Fastest</option>
-                    </Select>
+                    {show && (
+                        <>
+                            <TextField onChange={inputForm} margin="dense" id="CacheSize" label="Cache size" value={settings.CacheSize} type="number" fullWidth />
+                            <FormControlLabel control={<Switch checked={settings.PreloadBuffer} onChange={inputForm} id="PreloadBuffer" color="primary" />} label="Preload buffer" />
+                            <TextField onChange={inputForm} margin="dense" id="ReaderReadAHead" label="Reader readahead" value={settings.ReaderReadAHead} type="number" fullWidth />
+                            <h1 />
+                            <InputLabel htmlFor="RetrackersMode">Retracker mode</InputLabel>
+                            <Select onChange={inputForm} type="number" native="true" id="RetrackersMode" value={settings.RetrackersMode}>
+                                <option value={0}>Don't add retrackers</option>
+                                <option value={1}>Add retrackers</option>
+                                <option value={2}>Remove retrackers</option>
+                                <option value={3}>Replace retrackers</option>
+                            </Select>
+                            <TextField
+                                onChange={inputForm}
+                                margin="dense"
+                                id="TorrentDisconnectTimeout"
+                                label="Torrent disconnect timeout"
+                                value={settings.TorrentDisconnectTimeout}
+                                type="text"
+                                fullWidth
+                            />
+                            <FormControlLabel control={<Switch checked={settings.EnableIPv6} onChange={inputForm} id="EnableIPv6" color="primary" />} label="Enable IPv6" />
+                            <br />
+                            <FormControlLabel control={<Switch checked={settings.ForceEncrypt} onChange={inputForm} id="ForceEncrypt" color="primary" />} label="Force encrypt" />
+                            <br />
+                            <FormControlLabel control={<Switch checked={settings.DisableTCP} onChange={inputForm} id="DisableTCP" color="primary" />} label="Disable TCP" />
+                            <br />
+                            <FormControlLabel control={<Switch checked={settings.DisableUTP} onChange={inputForm} id="DisableUTP" color="primary" />} label="Disable UTP" />
+                            <br />
+                            <FormControlLabel control={<Switch checked={settings.DisableUPNP} onChange={inputForm} id="DisableUPNP" color="primary" />} label="Disable UPNP" />
+                            <br />
+                            <FormControlLabel control={<Switch checked={settings.DisableDHT} onChange={inputForm} id="DisableDHT" color="primary" />} label="Disable DHT" />
+                            <br />
+                            <FormControlLabel control={<Switch checked={settings.DisableUpload} onChange={inputForm} id="DisableUpload" color="primary" />} label="Disable upload" />
+                            <br />
+                            <TextField onChange={inputForm} margin="dense" id="DownloadRateLimit" label="Download rate limit" value={settings.DownloadRateLimit} type="number" fullWidth />
+                            <TextField onChange={inputForm} margin="dense" id="UploadRateLimit" label="Upload rate limit" value={settings.UploadRateLimit} type="number" fullWidth />
+                            <TextField onChange={inputForm} margin="dense" id="ConnectionsLimit" label="Connections limit" value={settings.ConnectionsLimit} type="number" fullWidth />
+                            <TextField onChange={inputForm} margin="dense" id="DhtConnectionLimit" label="Dht connection limit" value={settings.DhtConnectionLimit} type="number" fullWidth />
+                            <TextField onChange={inputForm} margin="dense" id="PeersListenPort" label="Peers listen port" value={settings.PeersListenPort} type="number" fullWidth />
+                            <h1 />
+                            <InputLabel id="Strategy">Strategy</InputLabel>
+                            <Select onChange={inputForm} type="number" native="true" id="Strategy" value={settings.Strategy}>
+                                <option value={0}>DuplicateRequestTimeout</option>
+                                <option value={1}>Fuzzing</option>
+                                <option value={2}>Fastest</option>
+                            </Select>
+                        </>
+                    )}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary" variant="outlined">
