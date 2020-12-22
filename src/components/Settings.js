@@ -114,7 +114,7 @@ export default function SettingsDialog() {
                                 id="TorrentDisconnectTimeout"
                                 label="Torrent disconnect timeout"
                                 value={settings.TorrentDisconnectTimeout}
-                                type="text"
+                                type="number"
                                 fullWidth
                             />
                             <FormControlLabel control={<Switch checked={settings.EnableIPv6} onChange={inputForm} id="EnableIPv6" color="primary" />} label="Enable IPv6" />
